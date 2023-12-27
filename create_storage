@@ -1,0 +1,40 @@
+#!/usr/bin/bash
+
+recommend_regions() {
+    regions=($( az account list-locations --query "[].{Region: name}" -o tsv | head -n 10))
+    for i in "${regions[@]}" 
+    do 
+        echo $i
+    done
+}
+
+list_rg() {
+    rg_list=($( az group list --query "[].name" -o tsv))
+    for i in "${rg_list[@]}"
+    do
+        echo "$i"
+    done
+}
+
+create_storage() {
+    echo "Creating storage in Azure Blob Storage in rg-duongsearg"
+    az storage account create \
+        --name duongstorage1 \
+        --resource-group rg-duongsearg \
+        --sku Standard_RAGRS \
+        --kind StorageV2 \
+        --allow-blob-public-access false | grep provisioningState
+}
+
+create_container() {
+    echo "Creating container"
+    az storage container create \
+    --name storage1 \
+    --account-name duongstorage1 \
+    --auth-mode login
+}
+
+# recommend_regions
+# list_rg
+# create_storage
+create_container

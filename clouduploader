@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+echo 
+
+file_path=$1
+
+account_name="duongstorage1"
+container_name="storage1"
+blob_name=($(basename $file_path))
+
+az storage blob upload \
+    --account-name duongstorage1 \
+    --container-name storage1 \
+    --name blob_name \
+    --file file_path
+
+echo "Tada"
